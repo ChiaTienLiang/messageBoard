@@ -17,8 +17,10 @@ if (mysqli_num_rows($result) != 0) {
         echo 'false';
     } else {
         $result = mysqli_query($mysqli, $sql);
-        $id = $result2->id;
-        setcookie('id', $id);
+        // $name = $result2->name;
+        session_start();
+        $_SESSION['name'] = $result2->name;
+        $_SESSION['id'] = $result2->id;
         echo 'true';
     }
 } else {

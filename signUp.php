@@ -116,6 +116,7 @@
                                 Swal.fire({
                                         position: 'top',
                                         icon: 'success',
+                                        title: '成功加入會員',
                                         showConfirmButton: false,
                                         timer: 1000
                                     })

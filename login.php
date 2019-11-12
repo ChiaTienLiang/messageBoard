@@ -55,14 +55,14 @@
         <br>
         <br>
         <div class="data">
-          <label for="address">密碼:</label>
-          <input type="password" name="password" class="form-control" id="password" placeholder="8-12含大小寫英文及數字">
+          <label for="password">密碼:</label>
+          <input type="password" name="password" class="form-control" id="password" placeholder="8-12含大小寫英文及數字" autocomplete="off">
         </div>
         <p></p>
         <br>
         <br>
         <div class="data">
-          <button class="btn btn-primary btn-lg btn-block" type="button" id="btnOK">送出</button>
+          <button class="btn btn-primary btn-lg btn-block" type="button" id="login">送出</button>
         </div>
       </form>
     </div>
@@ -75,7 +75,7 @@
     $(document).ready(function() {
       var emailR = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$/;
       var passwordR = /^[a-zA-Z0-9]{8,12}$/;
-      $("#btnOK").click(function() {
+      $("#login").click(function() {
         if (
           emailR.test($("#email").val()) &&
           passwordR.test($("#password").val())

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -24,7 +24,8 @@
         h1 {
             text-align: center;
         }
-        .day{
+
+        .day {
             text-align: right;
         }
     </style>
@@ -36,19 +37,26 @@
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <span class="navbar-brand">Welcome to CY Message Board，
+                    <?php session_start();
+                    if (isset($_SESSION['name'])) echo $_SESSION['name'];
+                    else echo 'Guest' ?>
+                </span>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="login.php">Sign in<span class="sr-only"></span></a></li>
+                    <li class="active">
+                        <?php
+                        if (!isset($_SESSION['name'])) echo '<a href="login.php">Sign in';
+                        else echo '<a href="logout.php">Sign out' ?>
+                        </a></li>
                     <li><a href="signUp.php">Sign up</a></li>
                 </ul>
             </div>
@@ -108,28 +116,73 @@
                     includes the responsive CSS and HTML, so it also adapts to your viewport and device.</h5>
                 <h5 class="day">2019-11-11</h5>
             </div>
-            <div class="jumbotron p-3 p-md-5 ">
+            <?php if (isset($_SESSION['name'])) echo
+                '<div class="jumbotron p-3 p-md-5 ">
                 <div>
                     <h1 class="display-4 font-italic">input your message here</h1>
                     <div class="form-group">
-                        <textarea class="form-control" style="width:100%" rows="7"></textarea>
+                        <textarea class="form-control" style="width:100%" rows="7" id="Msg"></textarea>
                     </div>
                 </div>
-                <button class="btn btn-lg  btn-default btn-block" type="submit"
-                    style="background-color: white;width:50%;margin:auto;">submit</button>
-            </div>
-        </div> <!-- /container -->
+                <button class="btn btn-lg  btn-default btn-block" type="button" id="addMsg" style="background-color: white;width:50%;margin:auto;">送出</button>
+            </div>'; ?>
 
+        </div> <!-- /container -->
 
         <!-- Bootstrap core JavaScript
     ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-        <script>
-            window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-        </script>
         <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script>
+            $(document).ready(function() {
+                $("#addMsg").click(function() {
+                    if (
+                        $("#Msg").val() != ""
+                    ) {
+                        $.ajax({
+                            type: "POST", //傳送方式
+                            url: "addMsg.php", //傳送目的地
+                            data: {
+                                Msg: $("#Msg").val()
+                            },
+                            success: function(res) {
+                                // console.log(res);
+                                if (res === 'false') {
+                                    Swal.fire({
+                                        position: 'top',
+                                        icon: 'error',
+                                        title: '帳號密碼錯誤!',
+                                    })
+                                } else if (res === 'true') {
+
+                                    Swal.fire({
+                                        position: 'top',
+                                        icon: 'success',
+                                        title: '登入成功',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(function() {
+                                        window.location.href = "home.php"
+                                    });
+                                }
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            position: 'top',
+                            icon: 'error',
+                            title: '不能為空',
+                        })
+                    }
+                });
+
+            });
+        </script>
 </body>
 
 </html>
