@@ -5,25 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <meta name="generator" content="Jekyll v3.8.5">
-    <title>Checkout example · Bootstrap 4 繁體中文手冊 [六角學院譯]</title>
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
-        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
-        crossorigin="anonymous"></script>
-    <!-- Bootstrap core CSS -->
-    <!-- <link href="/docs/4.2/dist/css/bootstrap.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -37,7 +30,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="form-validation.css" rel="stylesheet">
+
 </head>
 
 <body class="bg-light">
@@ -54,7 +47,7 @@
             <form class="needs-validation" novalidate>
                 <div>
                     <label for="firstName">姓名:</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="輸入姓名" required>
                     <!-- <div class="invalid-feedback">
                         Valid first name is required.
                     </div> -->
@@ -62,7 +55,7 @@
                 <p></p>
                 <div>
                     <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com" pattern="^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$" required>
                     <!-- <div class="invalid-feedback">
                         Please enter a valid email address for shipping updates.
                     </div> -->
@@ -70,7 +63,7 @@
                 <p></p>
                 <div>
                     <label for="address">密碼:</label>
-                    <input type="text" class="form-control" id="address" placeholder="8-12含大小寫英文及數字" required>
+                    <input type="text" name="password" class="form-control" id="password" placeholder="8-12含大小寫英文及數字" pattern="^[a-zA-Z0-9]{8,12}$" required>
                     <!-- <div class="invalid-feedback">
                         Please enter your shipping address.
                     </div> -->
@@ -82,7 +75,7 @@
                 </div> -->
                 <hr class="mb-4">
                 <p></p>
-                <button class="btn btn-primary btn-lg btn-block" type="submit">submit</button>
+                <button class="btn btn-primary btn-lg btn-block" type="button" id="btnOK">submit</button>
             </form>
 
         </div>
@@ -96,12 +89,57 @@
             </ul> -->
         </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="/docs/4.2/dist/js/bootstrap.bundle.js"></script>
-    <script src="form-validation.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#btnOK").click(function() {
+                var emailR = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$/;
+                var passwordR = /^[a-zA-Z0-9]{8,12}$/;
+                if (
+                    $("#name").val() != "" &&
+                    emailR.test($("#email").val()) &&
+                    passwordR.test($("#password").val())
+                ) {
+                    $.ajax({
+                        type: "POST", //傳送方式
+                        url: "join.php", //傳送目的地
+                        data: {
+                            name: $("#name").val(),
+                            email: $("#email").val(),
+                            password: $("#password").val()
+                        },
+                        success: function(res) {
+                            // console.log(res);
+                            if (res === 'false') {
+                                Swal.fire({
+                                    position: 'top',
+                                    icon: 'error',
+                                    title: '該Email已被註冊',
+                                })
+                            } else if (res === 'true') {
+                                Swal.fire({
+                                    position: 'top',
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'top',
+                        icon: 'error',
+                        title: '資料輸入格式錯誤',
+                    })
+                }
+            });
+
+        });
+    </script>
+
 </body>
 
 </html>

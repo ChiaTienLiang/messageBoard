@@ -52,9 +52,9 @@
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
     <div class="checkbox mb-3">
-      <label>
+      <!-- <label>
         <input type="checkbox" value="remember-me"> Remember me
-      </label>
+      </label> -->
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
