@@ -28,6 +28,16 @@
                 font-size: 3.5rem;
             }
         }
+
+        .data {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* .container{
+            margin: 10% auto;
+        } */
     </style>
     <!-- Custom styles for this template -->
 
@@ -43,50 +53,37 @@
         </div>
         <hr class="mb-4">
 
-        <div style="height:20%;">
+        <div>
             <form class="needs-validation" novalidate>
-                <div>
+                <div class="data">
                     <label for="firstName">姓名:</label>
-                    <input type="text" name="name" class="form-control" id="name" placeholder="輸入姓名" required>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="輸入姓名">
                     <!-- <div class="invalid-feedback">
                         Valid first name is required.
                     </div> -->
                 </div>
                 <p></p>
-                <div>
+                <div class="data">
                     <label for="email">Email:</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com" pattern="^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$" required>
-                    <!-- <div class="invalid-feedback">
-                        Please enter a valid email address for shipping updates.
-                    </div> -->
+                    <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com">
                 </div>
                 <p></p>
-                <div>
+                <div class="data">
                     <label for="address">密碼:</label>
-                    <input type="text" name="password" class="form-control" id="password" placeholder="8-12含大小寫英文及數字" pattern="^[a-zA-Z0-9]{8,12}$" required>
-                    <!-- <div class="invalid-feedback">
-                        Please enter your shipping address.
-                    </div> -->
+                    <input type="password" name="password" class="form-control" id="password" placeholder="8-12含大小寫英文及數字">
                 </div>
                 <p></p>
-                <!-- <div>
-                    <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-                </div> -->
                 <hr class="mb-4">
                 <p></p>
-                <button class="btn btn-primary btn-lg btn-block" type="button" id="btnOK">submit</button>
+                <div class="data">
+                    <button class="btn btn-primary btn-lg btn-block" type="button" id="btnOK">送出</button>
+                </div>
             </form>
 
         </div>
         <p></p>
         <footer class="my-5 pt-5 text-muted text-center text-small">
             <p class="mb-1">&copy; 2019-11-11 CY</p>
-            <!-- <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Privacy</a></li>
-                <li class="list-inline-item"><a href="#">Terms</a></li>
-                <li class="list-inline-item"><a href="#">Support</a></li>
-            </ul> -->
         </footer>
     </div>
     <script>
@@ -101,7 +98,7 @@
                 ) {
                     $.ajax({
                         type: "POST", //傳送方式
-                        url: "join.php", //傳送目的地
+                        url: "signUpCheck.php", //傳送目的地
                         data: {
                             name: $("#name").val(),
                             email: $("#email").val(),
@@ -117,11 +114,14 @@
                                 })
                             } else if (res === 'true') {
                                 Swal.fire({
-                                    position: 'top',
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                                        position: 'top',
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 1000
+                                    })
+                                    .then(function() {
+                                        window.location.href = "login.php"
+                                    });
                             }
                         },
                         error: function(error) {
