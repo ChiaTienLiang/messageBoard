@@ -15,7 +15,7 @@ if (mysqli_num_rows($result) != 0) {
     // header("Location:signUp.php?errorMesg='false'");
     echo 'false';
 } else {
-    $sql = "INSERT INTO member(name,email,password,create_at)VALUES('$name','$email','$password',NOW())";
+    $sql = "INSERT INTO member(name,email,password)VALUES('$name','$email','$password')";
     $result = mysqli_query($mysqli, $sql);
     // header("Location:signUp.php?errorMesg='true'");
     echo 'true';

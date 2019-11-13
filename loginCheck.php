@@ -20,7 +20,7 @@ if (mysqli_num_rows($result) != 0) {
         // $name = $result2->name;
         session_start();
         $_SESSION['name'] = $result2->name;
-        $_SESSION['id'] = $result2->id;
+        $_SESSION['level'] = $result2->level;
         echo 'true';
     }
 } else {
