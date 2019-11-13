@@ -55,9 +55,13 @@
                 </button>
                 <span class="navbar-brand">Welcome to CY Message Board，
                     <?php session_start();
-                    $level = $_SESSION['level'];
+                    if (isset($_SESSION['level'])) $level = $_SESSION['level'];
+                    else $level = NULL;
                     if (isset($_SESSION['name'])) echo $_SESSION['name'];
-                    else echo 'Guest' ?>
+                    else echo 'Guest';
+                    if (isset($_SESSION['id'])) $memberId = $_SESSION['id'];
+                    else $memberId = NULL;
+                    ?>
                 </span>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -96,7 +100,6 @@
                 <h5 class="day">2019-11-11</h5>
             </div>
             <p></p> -->
-
             <script type="text/javascript">
                 $(document).ready(function() {
                     $.ajax({
@@ -105,14 +108,35 @@
                         dateType: "json",
                         contentType: 'application/json; charset=UTF-8',
                         success: function(res) {
+                            var level = "<?php echo $level ?>";
+                            var memberId = "<?php echo $memberId ?>";
                             res = JSON.parse(res);
-                            for (let i = 0; i < res.length; i++) {
-                                $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
-                                <?php if ($level > 0)
-                                    echo '<button type="button" class="btn btn-danger"  id="delBtn" onclick="del(' ?> ${res[i].id} <?php echo ')">刪除</button>' ?>
+                            if (level == 1) {
+                                for (let i = 0; i < res.length; i++) {
+                                    $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
+                                <button type="button" class="btn btn-danger"  id="delBtn" onclick="del( ${res[i].id})">刪除</button>
                                 </div><p></p>`);
+                                }
+                            } else if (level == 0) {
+                                for (let i = 0; i < res.length; i++) {
+                                    if (memberId == res[i].memberId) {
+                                        $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
+                                         <button type="button" class="btn btn-info" onclick="chang(${res[i].id})">修改</button>
+                                         <button type="button" class="btn btn-danger" onclick="del( ${res[i].id})">刪除</button>
+                                          </div><p></p>`);
+                                    } else {
+                                        $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
+                                          </div><p></p>`);
+                                    }
+
+                                }
+                            } else {
+                                for (let i = 0; i < res.length; i++) {
+                                    $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
+                                </div><p></p>`);
+                                }
                             }
-                            // console.log(res);
+                            console.log(res);
                         },
                         error: function(error) {
                             console.log(error);
@@ -172,6 +196,29 @@
                             console.log(error);
                         }
                     });
+                }
+
+                function chang(e) {
+                    // window.location.href = "leaveMsg.php?id=" + e
+
+                    // document.write("<form action=leaveMsg.php method=post name=form1 style='display:none'>");  
+                    // document.write("<input type=hidden name=id value='"+e+"'");  
+                    // document.write("</form>");  
+                    // document.form1.submit(); 
+                    // $.ajax({
+                    //     type: "POST", //傳送方式
+                    //     url: "GetOneMsg.php", //傳送目的地
+                    //     data: {
+                    //         id: e
+                    //     },
+                    //     success: function(res) {
+                    //         // 
+                    //         console.log(res);
+                    //     },
+                    //     error: function(error) {
+                    //         console.log(error);
+                    //     }
+                    // });
                 }
             </script>
         </div> <!-- /container -->

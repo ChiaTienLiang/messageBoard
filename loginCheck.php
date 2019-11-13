@@ -21,6 +21,7 @@ if (mysqli_num_rows($result) != 0) {
         session_start();
         $_SESSION['name'] = $result2->name;
         $_SESSION['level'] = $result2->level;
+        $_SESSION['id'] = $result2->id;
         echo 'true';
     }
 } else {
