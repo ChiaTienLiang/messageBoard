@@ -99,6 +99,7 @@
             </div>
             <p></p> -->
             <script type="text/javascript">
+                var temp;
                 $(document).ready(function() {
                     $.ajax({
                         type: "GET", //傳送方式
@@ -207,16 +208,16 @@
                 }
 
                 function change(e) {
-                    let temp = $("#txt" + e).html();
+                    temp = $("#txt" + e).html();
                     var brExp = /<br\s*\/?>/i;
                     newTemp = temp.split(brExp);
                     // console.log(temp);
                     $("#txt" + e).html("");
-                    $("#txt" + e).append(`<textarea class="form-control" style="width:100%" rows="7" id="Msg">${newTemp}</textarea><br>`);
+                    $("#txt" + e).append(`<textarea class="form-control" style="width:100%" rows="7" id="txtMsg">${newTemp}</textarea><br>`);
                     $("#change" + e).hide();
                     $("#del" + e).hide();
-                    $("#txt" + e).append(`<button type="button" class="btn btn-success pull-right">確認修改</button>`);
-                    
+                    $("#txt" + e).append(`<button type="button" class="btn btn-danger pull-right" onclick="cancel(${e})">取消</button><button type="button" class="btn btn-success pull-right" onclick="changeOk(${e})">確認</button>`);
+
                     // last = $("body").height() - $(window).height() //滾到最底
                     // $("html").animate({
                     //     scrollTop: last
@@ -240,6 +241,30 @@
                     //         console.log(error);
                     //     }
                     // });
+                }
+
+                function changeOk(e) {
+                    $.ajax({
+                        type: "POST", //傳送方式
+                        url: "changMsg.php", //傳送目的地
+                        data: {
+                            id: e,
+                            Msg: $("#txtMsg").val()
+                        },
+                        success: function(res) {
+                            // location.reload();
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
+
+                function cancel(e) {
+                    $("#txt" + e).html("");
+                    $("#txt" + e).append(temp);
+                    $("#change" + e).show();
+                    $("#del" + e).show();
                 }
             </script>
             <img id="gotop" src="img/gotop.png" style="position: fixed; bottom:20px; right:20px;">
