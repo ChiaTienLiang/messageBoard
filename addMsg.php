@@ -1,7 +1,7 @@
 <?php
 require_once("sql.php");
 session_start();
-$message = $_POST['Msg'];
+$message = nl2br($_POST['Msg']);
 $memberId = $_SESSION['id'];
 
 $sql = "INSERT INTO message(memberId,message)VALUES('$memberId','$message')";

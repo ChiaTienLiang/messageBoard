@@ -31,13 +31,9 @@
             text-align: right;
         }
 
-        #delBtn {
-            margin-left: 90%;
+        textarea {
+            resize: none;
         }
-
-        /*  #changBtn {
-            margin-left: 80%;
-        } */
     </style>
 </head>
 
@@ -90,8 +86,10 @@
         <div class="jumbotron">
             <h1>CY Message Board</h1>
         </div>
+
         <!-- Main component for a primary marketing message or call to action -->
         <div class="jumbotron" id="msg">
+
             <!-- <div class="message">
                 <h3>Navbar example</h3>
                 <h5>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work.
@@ -113,30 +111,36 @@
                             res = JSON.parse(res);
                             if (level == 1) {
                                 for (let i = 0; i < res.length; i++) {
-                                    $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
-                                <button type="button" class="btn btn-danger"  id="delBtn" onclick="del( ${res[i].id})">刪除</button>
-                                </div><p></p>`);
+                                    if (memberId == res[i].memberId) {
+                                        $("#msg").append(`<div class="message"><span class="h3">${res[i].name}</span><span class="day h5 pull-right">${res[i].create_at}</span><hr><div id="txt${res[i].id}">${res[i].message}</div><br>
+                                        <button type="button" class="btn btn-info" id="change${res[i].id}" onclick="change(${res[i].id})">修改</button>
+                                        <button type="button" class="btn btn-danger" id="del${res[i].id}" onclick="del(${res[i].id})">刪除</button>
+                                         </div><p></p>`);
+                                    } else {
+                                        $("#msg").append(`<div class="message"><span class="h3">${res[i].name}</span><span class="day h5 pull-right">${res[i].create_at}</span><hr><div id="txt${res[i].id}">${res[i].message}</div><br>
+                                        <button type="button" class="btn btn-danger" onclick="del(${res[i].id})">刪除</button>
+                                        </div><p></p>`);
+                                    }
                                 }
                             } else if (level == 0) {
                                 for (let i = 0; i < res.length; i++) {
                                     if (memberId == res[i].memberId) {
-                                        $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
-                                         <button type="button" class="btn btn-info" onclick="chang(${res[i].id})">修改</button>
-                                         <button type="button" class="btn btn-danger" onclick="del( ${res[i].id})">刪除</button>
+                                        $("#msg").append(`<div class="message"><span class="h3">${res[i].name}</span><span class="day h5 pull-right">${res[i].create_at}</span><hr><div id="txt${res[i].id}">${res[i].message}</div><br>
+                                         <button type="button" class="btn btn-info" id="change${res[i].id}" onclick="change(${res[i].id})">修改</button>
+                                         <button type="button" class="btn btn-danger" id="del${res[i].id}" onclick="del( ${res[i].id})">刪除</button>
                                           </div><p></p>`);
                                     } else {
-                                        $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
+                                        $("#msg").append(`<div class="message"><span class="h3">${res[i].name}</span><span class="day h5 pull-right">${res[i].create_at}</span><hr><div id="txt${res[i].id}">${res[i].message}</div><br>
                                           </div><p></p>`);
                                     }
-
                                 }
                             } else {
                                 for (let i = 0; i < res.length; i++) {
-                                    $("#msg").append(`<div class="message"><h3>${res[i].name}</h3><h5>${res[i].message}</h5><h5 class="day">${res[i].create_at}</h5>
+                                    $("#msg").append(`<div class="message"><span class="h3">${res[i].name}</span><span class="day h5 pull-right">${res[i].create_at}</span><hr><div id="txt${res[i].id}">${res[i].message}</div><br>
                                 </div><p></p>`);
                                 }
                             }
-                            console.log(res);
+                            // console.log(res);
                         },
                         error: function(error) {
                             console.log(error);
@@ -178,7 +182,11 @@
                             })
                         }
                     });
-
+                    $("#gotop").click(function() {
+                        $("html").animate({
+                            scrollTop: 0
+                        }, 1000);
+                    });
                 });
 
                 function del(e) {
@@ -198,13 +206,22 @@
                     });
                 }
 
-                function chang(e) {
-                    // window.location.href = "leaveMsg.php?id=" + e
+                function change(e) {
+                    let temp = $("#txt" + e).html();
+                    var brExp = /<br\s*\/?>/i;
+                    newTemp = temp.split(brExp);
+                    // console.log(temp);
+                    $("#txt" + e).html("");
+                    $("#txt" + e).append(`<textarea class="form-control" style="width:100%" rows="7" id="Msg">${newTemp}</textarea><br>`);
+                    $("#change" + e).hide();
+                    $("#del" + e).hide();
+                    $("#txt" + e).append(`<button type="button" class="btn btn-success pull-right">確認修改</button>`);
+                    
+                    // last = $("body").height() - $(window).height() //滾到最底
+                    // $("html").animate({
+                    //     scrollTop: last
+                    // }, 1000);
 
-                    // document.write("<form action=leaveMsg.php method=post name=form1 style='display:none'>");  
-                    // document.write("<input type=hidden name=id value='"+e+"'");  
-                    // document.write("</form>");  
-                    // document.form1.submit(); 
                     // $.ajax({
                     //     type: "POST", //傳送方式
                     //     url: "GetOneMsg.php", //傳送目的地
@@ -212,8 +229,12 @@
                     //         id: e
                     //     },
                     //     success: function(res) {
-                    //         // 
-                    //         console.log(res);
+                    //         res = JSON.parse(res);
+                    //         // resMsg = res.message;
+                    //         // console.log(res.message);
+                    //         var brExp = /<br\s*\/?>/i;
+                    //         newRes = res.message.split(brExp);
+                    //         $("#Msg").val(newRes);
                     //     },
                     //     error: function(error) {
                     //         console.log(error);
@@ -221,6 +242,7 @@
                     // });
                 }
             </script>
+            <img id="gotop" src="img/gotop.png" style="position: fixed; bottom:20px; right:20px;">
         </div> <!-- /container -->
         <?php if (isset($_SESSION['name'])) echo
             '<div class="jumbotron p-3 p-md-5 ">
