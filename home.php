@@ -10,12 +10,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title>CY Message Board</title>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="icon" href="img/icon.ico" type="image/x-icon" />
     <style>
         .message {
             background-color: lightgray;
@@ -209,11 +209,13 @@
 
                 function change(e) {
                     temp = $("#txt" + e).html();
-                    var brExp = /<br\s*\/?>/i;
+
+                    var brExp = /<br\s*\/?>/;
                     newTemp = temp.split(brExp);
-                    // console.log(temp);
+                    newTemp2 = newTemp.join("");
+                    // console.log(newTemp2);
                     $("#txt" + e).html("");
-                    $("#txt" + e).append(`<textarea class="form-control" style="width:100%" rows="7" id="txtMsg">${newTemp}</textarea><br>`);
+                    $("#txt" + e).append(`<textarea class="form-control" style="width:100%" rows="7" id="txtMsg">${newTemp2}</textarea><br>`);
                     $("#change" + e).hide();
                     $("#del" + e).hide();
                     $("#txt" + e).append(`<button type="button" class="btn btn-danger pull-right" onclick="cancel(${e})">取消</button><button type="button" class="btn btn-success pull-right" onclick="changeOk(${e})">確認</button>`);
@@ -252,7 +254,7 @@
                             Msg: $("#txtMsg").val()
                         },
                         success: function(res) {
-                            // location.reload();
+                            location.reload();
                         },
                         error: function(error) {
                             console.log(error);
